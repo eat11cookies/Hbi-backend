@@ -163,7 +163,7 @@ public class ChartController {
      */
     @PostMapping("/list/page")
     public BaseResponse<Page<Chart>> listChartByPage(@RequestBody ChartQueryRequest chartQueryRequest,
-            HttpServletRequest request) {
+                                                     HttpServletRequest request) {
         long current = chartQueryRequest.getCurrent();
         long size = chartQueryRequest.getPageSize();
         // 限制爬虫
@@ -183,7 +183,7 @@ public class ChartController {
      */
     @PostMapping("/my/list/page")
     public BaseResponse<Page<Chart>> listMyChartByPage(@RequestBody ChartQueryRequest chartQueryRequest,
-            HttpServletRequest request) {
+                                                       HttpServletRequest request) {
         if (chartQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -232,7 +232,7 @@ public class ChartController {
      * @param
      * @return
      */
-    private QueryWrapper<Chart>     getQueryWrapper(ChartQueryRequest chartQueryRequest) {
+    private QueryWrapper<Chart> getQueryWrapper(ChartQueryRequest chartQueryRequest) {
         QueryWrapper<Chart> queryWrapper = new QueryWrapper<>();
         if (chartQueryRequest == null) {
             return queryWrapper;
@@ -246,13 +246,13 @@ public class ChartController {
         long pageSize = chartQueryRequest.getPageSize();
         String sortField = chartQueryRequest.getSortField();
         String sortOrder = chartQueryRequest.getSortOrder();
-        queryWrapper.eq(id!=null&&id>0,"id",id);
-        queryWrapper.eq(StringUtils.isNotBlank(goal),"goal",goal);
-        queryWrapper.eq(StringUtils.isNotBlank(name),"name",name);
-        queryWrapper.eq(StringUtils.isNotBlank(chartType),"chartType",chartType);
+        queryWrapper.eq(id != null && id > 0, "id", id);
+        queryWrapper.eq(StringUtils.isNotBlank(goal), "goal", goal);
+        queryWrapper.eq(StringUtils.isNotBlank(name), "name", name);
+        queryWrapper.eq(StringUtils.isNotBlank(chartType), "chartType", chartType);
         queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
         queryWrapper.eq("isDelete", false);
-        queryWrapper.orderBy(SqlUtils.validSortField(sortField),sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
+        queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
     }
@@ -267,7 +267,7 @@ public class ChartController {
      */
     @PostMapping("/gen/async/mq")
     public BaseResponse<BiResponse> genChartByAiAsyncMQ(@RequestPart("file") MultipartFile multipartFile,
-                                             GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
+                                                        GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
         String name = genChartByAiRequest.getName();
         String goal = genChartByAiRequest.getGoal();
         String chartType = genChartByAiRequest.getChartType();
@@ -275,22 +275,22 @@ public class ChartController {
         //用户限流
 //        redisLimiterManager.doRateLimit("genChartByAi_"+loginUser.getId());
         //校验
-        ThrowUtils.throwIf(StringUtils.isBlank(goal),ErrorCode.PARAMS_ERROR,"目标为空");
-        ThrowUtils.throwIf(StringUtils.isNotBlank(name)&&name.length()>100,ErrorCode.PARAMS_ERROR,"名称过长");
+        ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "目标为空");
+        ThrowUtils.throwIf(StringUtils.isNotBlank(name) && name.length() > 100, ErrorCode.PARAMS_ERROR, "名称过长");
         ///校验文件
         long size = multipartFile.getSize();
         String originalFilename = multipartFile.getOriginalFilename();
-        final long validsize=1024*1024L;
-        ThrowUtils.throwIf(size>validsize,ErrorCode.PARAMS_ERROR,"文件超过1M，请重新选择");
+        final long validsize = 1024 * 1024L;
+        ThrowUtils.throwIf(size > validsize, ErrorCode.PARAMS_ERROR, "文件超过1M，请重新选择");
         String suffix = FileUtil.getSuffix(originalFilename);
-        List<String> validSuffixList = Arrays.asList("xls","xlsx");
-        ThrowUtils.throwIf(!validSuffixList.contains(suffix),ErrorCode.PARAMS_ERROR,"文件后缀非法");
+        List<String> validSuffixList = Arrays.asList("xls", "xlsx");
+        ThrowUtils.throwIf(!validSuffixList.contains(suffix), ErrorCode.PARAMS_ERROR, "文件后缀非法");
         //用户输入
         StringBuilder userInput = new StringBuilder();
         userInput.append("分析需求:").append("\n");
-        String userGoal=goal;
-        if (StringUtils.isNotBlank(chartType)){
-            userGoal+=",请使用"+chartType;
+        String userGoal = goal;
+        if (StringUtils.isNotBlank(chartType)) {
+            userGoal += ",请使用" + chartType;
         }
         userInput.append(userGoal).append("\n");
         userInput.append("原始数据:").append("\n");
@@ -303,7 +303,7 @@ public class ChartController {
         chart.setChartType(chartType);
         chart.setUserId(loginUser.getId());
         boolean saveResult = chartService.save(chart);
-        ThrowUtils.throwIf(!saveResult,ErrorCode.OPERATION_ERROR,"保存图表数据失败");
+        ThrowUtils.throwIf(!saveResult, ErrorCode.OPERATION_ERROR, "保存图表数据失败");
         Long newChartId = chart.getId();
         //消息队列
         biMessageProducer.sendMessage(String.valueOf(newChartId));
@@ -324,7 +324,7 @@ public class ChartController {
      */
     @PostMapping("/gen/async")
     public BaseResponse<BiResponse> genChartByAiAsync(@RequestPart("file") MultipartFile multipartFile,
-                                             GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
+                                                      GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
         String name = genChartByAiRequest.getName();
         String goal = genChartByAiRequest.getGoal();
         String chartType = genChartByAiRequest.getChartType();
@@ -332,24 +332,24 @@ public class ChartController {
         //用户限流
 //        redisLimiterManager.doRateLimit("genChartByAi_"+loginUser.getId());
         //鱼聪明模型ID
-        Long modelId=1674998534069366785L;
+        Long modelId = 1674998534069366785L;
         //校验
-        ThrowUtils.throwIf(StringUtils.isBlank(goal),ErrorCode.PARAMS_ERROR,"目标为空");
-        ThrowUtils.throwIf(StringUtils.isNotBlank(name)&&name.length()>100,ErrorCode.PARAMS_ERROR,"名称过长");
+        ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "目标为空");
+        ThrowUtils.throwIf(StringUtils.isNotBlank(name) && name.length() > 100, ErrorCode.PARAMS_ERROR, "名称过长");
         ///校验文件
         long size = multipartFile.getSize();
         String originalFilename = multipartFile.getOriginalFilename();
-        final long validsize=1024*1024L;
-        ThrowUtils.throwIf(size>validsize,ErrorCode.PARAMS_ERROR,"文件超过1M，请重新选择");
+        final long validsize = 1024 * 1024L;
+        ThrowUtils.throwIf(size > validsize, ErrorCode.PARAMS_ERROR, "文件超过1M，请重新选择");
         String suffix = FileUtil.getSuffix(originalFilename);
-        List<String> validSuffixList = Arrays.asList("xls","xlsx");
-        ThrowUtils.throwIf(!validSuffixList.contains(suffix),ErrorCode.PARAMS_ERROR,"文件后缀非法");
+        List<String> validSuffixList = Arrays.asList("xls", "xlsx");
+        ThrowUtils.throwIf(!validSuffixList.contains(suffix), ErrorCode.PARAMS_ERROR, "文件后缀非法");
         //用户输入
         StringBuilder userInput = new StringBuilder();
         userInput.append("分析需求:").append("\n");
-        String userGoal=goal;
-        if (StringUtils.isNotBlank(chartType)){
-            userGoal+=",请使用"+chartType;
+        String userGoal = goal;
+        if (StringUtils.isNotBlank(chartType)) {
+            userGoal += ",请使用" + chartType;
         }
         userInput.append(userGoal).append("\n");
         userInput.append("原始数据:").append("\n");
@@ -362,7 +362,7 @@ public class ChartController {
         chart.setChartType(chartType);
         chart.setUserId(loginUser.getId());
         boolean saveResult = chartService.save(chart);
-        ThrowUtils.throwIf(!saveResult,ErrorCode.OPERATION_ERROR,"保存图表数据失败");
+        ThrowUtils.throwIf(!saveResult, ErrorCode.OPERATION_ERROR, "保存图表数据失败");
         CompletableFuture.runAsync(() -> {
             Chart updateChart = new Chart();
             updateChart.setId(chart.getId());
@@ -414,31 +414,33 @@ public class ChartController {
         //用户限流
 //        redisLimiterManager.doRateLimit("genChartByAi_"+loginUser.getId());
         //鱼聪明模型ID
-        Long modelId=1674998534069366785L;
+        Long modelId = 1674998534069366785L;
         //校验
-        ThrowUtils.throwIf(StringUtils.isBlank(goal),ErrorCode.PARAMS_ERROR,"目标为空");
-        ThrowUtils.throwIf(StringUtils.isNotBlank(name)&&name.length()>100,ErrorCode.PARAMS_ERROR,"名称过长");
+        String content = null;
+        String[] splits = new String[0];
+        ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "目标为空");
+        ThrowUtils.throwIf(StringUtils.isNotBlank(name) && name.length() > 100, ErrorCode.PARAMS_ERROR, "名称过长");
         ///校验文件
         long size = multipartFile.getSize();
         String originalFilename = multipartFile.getOriginalFilename();
-        final long validsize=1024*1024L;
-        ThrowUtils.throwIf(size>validsize,ErrorCode.PARAMS_ERROR,"文件超过1M，请重新选择");
+        final long validsize = 1024 * 1024L;
+        ThrowUtils.throwIf(size > validsize, ErrorCode.PARAMS_ERROR, "文件超过1M，请重新选择");
         String suffix = FileUtil.getSuffix(originalFilename);
-        List<String> validSuffixList = Arrays.asList("xls","xlsx");
-        ThrowUtils.throwIf(!validSuffixList.contains(suffix),ErrorCode.PARAMS_ERROR,"文件后缀非法");
+        List<String> validSuffixList = Arrays.asList("xls", "xlsx");
+        ThrowUtils.throwIf(!validSuffixList.contains(suffix), ErrorCode.PARAMS_ERROR, "文件后缀非法");
         //用户输入
         StringBuilder userInput = new StringBuilder();
         userInput.append("分析需求:").append("\n");
-        String userGoal=goal;
-        if (StringUtils.isNotBlank(chartType)){
-            userGoal+=",请使用"+chartType;
+        String userGoal = goal;
+        if (StringUtils.isNotBlank(chartType)) {
+            userGoal += ",请使用" + chartType;
         }
         userInput.append(userGoal).append("\n");
         userInput.append("原始数据:").append("\n");
-        String content = ExcelUtils.excelToCsv(multipartFile);
+        content = ExcelUtils.excelToCsv(multipartFile);
         userInput.append(content).append("\n");
         String result = aiManager.doChat(modelId, userInput.toString());
-        String[] splits = result.split("【【【【");
+        splits = result.split("【【【【");
         if (splits.length < 3) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "AI 生成错误");
         }
@@ -453,6 +455,7 @@ public class ChartController {
         chart.setGenChart(genChart);
         chart.setGenResult(genResult);
         chart.setUserId(loginUser.getId());
+        chart.setStatus(StatusEnum.succeed);
         boolean saveResult = chartService.save(chart);
         ThrowUtils.throwIf(!saveResult, ErrorCode.SYSTEM_ERROR, "图表保存失败");
         BiResponse biResponse = new BiResponse();
@@ -462,7 +465,7 @@ public class ChartController {
         return ResultUtils.success(biResponse);
     }
 
-    private void handleChartUpdateError(Long chartId,String message) {
+    private void handleChartUpdateError(Long chartId, String message) {
         Chart updateChart = new Chart();
         updateChart.setId(chartId);
         updateChart.setStatus(StatusEnum.failed);

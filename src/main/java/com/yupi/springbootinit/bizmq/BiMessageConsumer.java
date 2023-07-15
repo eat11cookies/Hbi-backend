@@ -66,7 +66,7 @@ public class BiMessageConsumer {
                 chanenel.basicNack(deliveryTag, false, true);
                 log.info("重试次数：{}", redeliveryCount);
                 redeliveryCount++;
-                Thread.sleep(600000);
+                Thread.sleep(30000);
                 return;
             }
             redeliveryCount = 1;
