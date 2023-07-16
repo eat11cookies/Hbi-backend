@@ -154,6 +154,18 @@ public class ChartController {
         return ResultUtils.success(chart);
     }
 
+    @GetMapping("/get/view")
+    public BaseResponse<List> viewDataById(long id, HttpServletRequest request) {
+        if (id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        List list = chartService.viewDataById(id);
+        if (list == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        return ResultUtils.success(list);
+    }
+
     /**
      * 分页获取列表（封装类）
      *

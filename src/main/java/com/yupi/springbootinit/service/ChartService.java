@@ -1,7 +1,9 @@
 package com.yupi.springbootinit.service;
 
-import com.yupi.springbootinit.model.entity.Chart;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yupi.springbootinit.model.entity.Chart;
+
+import java.util.List;
 
 /**
 * @author 惠普
@@ -9,5 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-06-27 21:29:27
 */
 public interface ChartService extends IService<Chart> {
-
+    List viewDataById(Long id);
 }

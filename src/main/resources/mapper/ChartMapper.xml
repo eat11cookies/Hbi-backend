@@ -18,6 +18,10 @@
             <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
+    <select id="viewDataById" resultType="String" parameterType="long">
+        select chartData from chart where id=#{id}
+    </select>
+
     <sql id="Base_Column_List">
         id,name,goal,chartData,
         chartType,genChart,genResult,
