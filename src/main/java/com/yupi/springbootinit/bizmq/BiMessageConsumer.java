@@ -111,6 +111,7 @@ public class BiMessageConsumer {
         userInput.append(userGoal).append("\n");
         userInput.append("原始数据:").append("\n");
         userInput.append(csvData).append("\n");
+        userInput.append(",生成结论不超过150字").append("\n");
         return userInput.toString();
     }
 
@@ -124,13 +125,4 @@ public class BiMessageConsumer {
             log.error("更新图表状态失败");
         }
     }
-//    private void retryChart(Long chartId) {
-//        Chart updateChart = new Chart();
-//        updateChart.setId(chartId);
-//        updateChart.setStatus(StatusEnum.retry);
-//        boolean b = chartService.updateById(updateChart);
-//        if (!b) {
-//            log.error("更新图表状态失败");
-//        }
-//    }
 }

@@ -32,18 +32,17 @@ public class ExcelUtils {
             log.error("表格处理错误",e);
             throw new RuntimeException(e);
         }
-        System.out.println(list);
         if(CollUtil.isEmpty(list)){
             return "";
         }
         StringBuilder stringBuilder=new StringBuilder();
         LinkedHashMap<Integer, String> headerMap = (LinkedHashMap)list.get(0);  //线性连续
         List<String> headerList = headerMap.values().stream().filter(ObjectUtils::isNotEmpty).collect(Collectors.toList());
-        stringBuilder.append(StringUtils.join(headerList,",")).append("\n");
+        stringBuilder.append(StringUtils.join(headerList,"，")).append("\n");
         for (int i = 1; i < list.size(); i++) {
             LinkedHashMap<Integer, String> dataMap = (LinkedHashMap)list.get(i);
             List<String> dataList = dataMap.values().stream().filter(ObjectUtils::isNotEmpty).collect(Collectors.toList());
-            stringBuilder.append(StringUtils.join(dataList,",")).append("\n");
+            stringBuilder.append(StringUtils.join(dataList,"，")).append("\n");
         }
         return stringBuilder.toString();
     }

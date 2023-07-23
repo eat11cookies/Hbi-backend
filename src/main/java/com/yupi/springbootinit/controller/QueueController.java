@@ -1,10 +1,13 @@
 package com.yupi.springbootinit.controller;
+
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -12,11 +15,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * 线程池接口
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author <a href="https://github.com/eat11cookies">hxq</a>
+ * 
  */
 @RestController
 @RequestMapping("/queue")
+@CrossOrigin(origins = {"http://140.143.139.251:8080","http://localhost:8000/"})
 @Slf4j
 public class QueueController {
     @Resource

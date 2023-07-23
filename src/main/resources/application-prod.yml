@@ -1,16 +1,17 @@
 # 线上配置文件
-# @author <a href="https://github.com/liyupi">程序员鱼皮</a>
-# @from <a href="https://yupi.icu">编程导航知识星球</a>
+# @author <a href="https://github.com/eat11cookies">hxq</a>
+# 
 server:
   port: 8101
+  address: 0.0.0.0
 spring:
   # 数据库配置
   # todo 需替换配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/my_db
-    username: root
-    password: 123456
+    url: 'jdbc:mysql://hbi@140.143.139.251:3306/hbi'
+    username: hxq
+    password: FzbfHKPYX2ndBYMT
   # Redis 配置
   # todo 需替换配置
   redis:
@@ -21,10 +22,10 @@ spring:
     password: 123456
   # Elasticsearch 配置
   # todo 需替换配置
-  elasticsearch:
-    uris: http://localhost:9200
-    username: root
-    password: 123456
+#  elasticsearch:
+#    uris: http://localhost:9200
+#    username: root
+#    password: 123456
 mybatis-plus:
   configuration:
     # 生产环境关闭日志

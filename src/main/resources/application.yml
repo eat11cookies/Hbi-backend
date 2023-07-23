@@ -1,6 +1,6 @@
-# 公共配置文件
-# @author <a href="https://github.com/liyupi">程序员鱼皮</a>
-# @from <a href="https://yupi.icu">编程导航知识星球</a>
+
+#这里的配置直接连接到远程服务器，一般不需要改动，更新项目后先在本地测试好，没问题更改前端访问url就行了
+
 spring:
   application:
     name: H-backend
@@ -19,18 +19,27 @@ spring:
     timeout: 2592000
   # 数据库配置
   # todo 需替换配置
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/hbi
+#    username: root
+#    password: 0211..hxq
+
+#    远程数据库
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/hbi
-    username: root
-    password: 0211..hxq
+    url: jdbc:mysql://140.143.139.251:3306/hbi
+    username: hxq
+    password: FzbfHKPYX2ndBYMT
+
   # Redis 配置
   # todo 需替换配置，然后取消注释
-#  redis:
-#    database: 1
-#    host: localhost
-#    port: 6379
-#    timeout: 5000
+  redis:
+    database: 1
+    host: 140.143.139.251
+    port: 6379
+    timeout: 5000
+    password: 0211..hxq
   # Elasticsearch 配置
   # todo 需替换配置，然后取消注释
 #  elasticsearch:
@@ -43,13 +52,24 @@ spring:
       # 大小限制
       max-file-size: 10MB
   rabbitmq:
-    host: localhost
+    host: 140.143.139.251
     port: 5672
     username: guest
     password: guest
+    ### 地址
+    virtual-host: /
+    listener:
+      simple:
+        retry:
+          ####开启消费者（程序出现异常的情况下会）进行重试
+          enabled: true
+          ####最大重试次数
+          max-attempts: 5
+          ####重试间隔次数
+          initial-interval: 3000
 server:
   address: 0.0.0.0
-  port: 8101
+  port: 8100
   servlet:
     context-path: /api
     # cookie 30 天过期
@@ -95,5 +115,5 @@ wx:
     appSecret: xxx
 yuapi:
   client:
-    access-key: pgakq6103ixbrfxm79pzea4pu4yixmhe
-    secret-key: budntudbwv4yua3xk90gf6knib8euvrq
+    access-key: g037mh44xfqh9u7l9w7p50cffbwbn7wg
+    secret-key: wzj5foy77bmhz7f35ufmt6joqb1m0c5c

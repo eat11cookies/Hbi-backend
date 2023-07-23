@@ -14,6 +14,7 @@ import com.yupi.springbootinit.constant.UserConstant;
 import com.yupi.springbootinit.exception.BusinessException;
 import com.yupi.springbootinit.exception.ThrowUtils;
 import com.yupi.springbootinit.manager.AiManager;
+import com.yupi.springbootinit.manager.RedisLimiterManager;
 import com.yupi.springbootinit.model.dto.chart.*;
 import com.yupi.springbootinit.model.entity.Chart;
 import com.yupi.springbootinit.model.entity.User;
@@ -40,11 +41,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * 帖子接口
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * @author <a href="https://github.com/eat11cookies">hxq</a>
+ * 
  */
 @RestController
 @RequestMapping("/chart")
+@CrossOrigin(origins = {"http://140.143.139.251:8080","http://localhost:8000/"})
 @Slf4j
 public class ChartController {
 
@@ -59,8 +61,8 @@ public class ChartController {
     @Resource
     private ThreadPoolExecutor threadPoolExecutor;
 
-//    @Resource
-//    private RedisLimiterManager redisLimiterManager;
+    @Resource
+    private RedisLimiterManager redisLimiterManager;
 
     @Resource
     private BiMessageProducer biMessageProducer;
@@ -284,8 +286,8 @@ public class ChartController {
         String goal = genChartByAiRequest.getGoal();
         String chartType = genChartByAiRequest.getChartType();
         User loginUser = userService.getLoginUser(request);
-        //用户限流
-//        redisLimiterManager.doRateLimit("genChartByAi_"+loginUser.getId());
+//        用户限流
+        redisLimiterManager.doRateLimit("genChartByAi_"+loginUser.getId());
         //校验
         ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "目标为空");
         ThrowUtils.throwIf(StringUtils.isNotBlank(name) && name.length() > 100, ErrorCode.PARAMS_ERROR, "名称过长");
@@ -342,7 +344,7 @@ public class ChartController {
         String chartType = genChartByAiRequest.getChartType();
         User loginUser = userService.getLoginUser(request);
         //用户限流
-//        redisLimiterManager.doRateLimit("genChartByAi_"+loginUser.getId());
+        redisLimiterManager.doRateLimit("genChartByAi_"+loginUser.getId());
         //鱼聪明模型ID
         Long modelId = 1674998534069366785L;
         //校验
@@ -367,6 +369,7 @@ public class ChartController {
         userInput.append("原始数据:").append("\n");
         String content = ExcelUtils.excelToCsv(multipartFile);
         userInput.append(content).append("\n");
+        userInput.append(",生成结论不超过150字").append("\n");
         Chart chart = new Chart();
         chart.setName(name);
         chart.setGoal(userGoal);
@@ -424,7 +427,7 @@ public class ChartController {
         String chartType = genChartByAiRequest.getChartType();
         User loginUser = userService.getLoginUser(request);
         //用户限流
-//        redisLimiterManager.doRateLimit("genChartByAi_"+loginUser.getId());
+        redisLimiterManager.doRateLimit("genChartByAi_"+loginUser.getId());
         //鱼聪明模型ID
         Long modelId = 1674998534069366785L;
         //校验
@@ -451,6 +454,7 @@ public class ChartController {
         userInput.append("原始数据:").append("\n");
         content = ExcelUtils.excelToCsv(multipartFile);
         userInput.append(content).append("\n");
+        userInput.append(",生成结论不超过150字").append("\n");
         String result = aiManager.doChat(modelId, userInput.toString());
         splits = result.split("【【【【");
         if (splits.length < 3) {

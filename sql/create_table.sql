@@ -30,7 +30,7 @@ create table if not exists chart
     chartType  varchar(128) null comment '图表类型',
     genChart   text null comment '生成的图表数据',
     genResult  text null comment '生成的分析结论',
-    status enum('wait','running','succeed','failed') default 'wait' not null comment '图标状态',
+    status enum('wait','running','succeed','failed','retry') default 'wait' not null comment '图标状态',
     execMessage text null comment '执行信息',
     userId     bigint                             not null comment '创建用户 id',
     createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
