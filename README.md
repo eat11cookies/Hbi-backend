@@ -1,5 +1,5 @@
 # H-智能BI平台
-> 作者：hxq
+> 作者：[hxq](https://github.com/eat11cookies)
 
 > 线上地址：[https://140.143.139.251/](http://140.143.139.251/)
 
