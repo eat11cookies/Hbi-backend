@@ -1,9 +1,6 @@
 # H-智能BI平台
 > 作者：[hxq](https://github.com/eat11cookies)
 
-> 线上地址：[https://140.143.139.251/](http://140.143.139.251/)
-
-
 ## 项目介绍
 本项目是基于React+ SpringBoot+ RabbitMQ+ AIGC(AI生成内容)的智能分析平台  
   
